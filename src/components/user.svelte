@@ -11,6 +11,10 @@
 	let pass = '';
 
 	const login = () => {
+		if (!alias || !pass) {
+			error = 'Please fill in all fields';
+			return;
+		}
 		user.auth(alias, pass, (ack) => {
 			if (ack.err) {
 				error = ack.err;
@@ -70,13 +74,7 @@
 				<h1 class="text-2xl">Login</h1>
 				<button class="text-lg" on:click={() => (modalActive = false)}>&#x2715;</button>
 			</div>
-			<form
-				class="flex flex-col gap-6"
-				on:submit={(event) => {
-					event.preventDefault();
-					login();
-				}}
-			>
+			<form class="flex flex-col gap-6" on:submit|preventDefault={login}>
 				<div>
 					<label for="alias" class="block mb-1">Username</label>
 					<input
@@ -99,12 +97,16 @@
 					<div class="bg-red-50 text-red-500 p-2">{error}</div>
 				{/if}
 				<div class="flex gap-4">
-					<button type="button" class="w-full rounded p-2 bg-blue-500 text-white" on:click={login}>
+					<button
+						type="submit"
+						class="w-full rounded p-2 bg-blue-500 hover:bg-blue-400 text-white"
+						on:click={login}
+					>
 						Login
 					</button>
 					<button
 						type="button"
-						class="w-full rounded p-2 bg-teal-500 text-white"
+						class="w-full rounded p-2 bg-teal-500 hover:bg-teal-400 text-white"
 						on:click={register}
 					>
 						Create
